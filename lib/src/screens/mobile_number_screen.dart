@@ -272,7 +272,7 @@ class _MobileNumberScreenState extends State<MobileNumberScreen>
 
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => const NewHomeScreen()),
+        MaterialPageRoute(builder: (context) => NewHomeScreen()),
         (Route<dynamic> route) => false);
   }
 
