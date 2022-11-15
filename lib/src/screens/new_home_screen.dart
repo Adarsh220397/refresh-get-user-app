@@ -24,7 +24,7 @@ class NewHomeScreen extends StatefulWidget {
 
 class _NewHomeScreenState extends State<NewHomeScreen> {
   late ThemeData themeData;
-
+  bool isLoading = false;
   UserDetailsModel userDetails = UserDetailsModel(
       gender: '',
       firstName: '',
@@ -40,15 +40,24 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
   @override
   void initState() {
     super.initState();
+
     filterData();
   }
 
   filterData() async {
+    isLoading = true;
+    // if (widget.user!.gender != 'male' || widget.user!.gender != 'female') {
+    //   maleUserList = widget.maleUserList!;
+    //   femaleUserList = widget.femaleUserList!;
+    //   isLoading = false;
+    //   setState(() {});
+    //   return;
+    // }
     if (widget.user!.gender == 'male') {
       widget.maleUserList!.removeWhere((element) =>
           element.firstName == widget.user!.firstName &&
           element.lastName == widget.user!.lastName);
-
+      print('--------------');
       maleUserList = widget.maleUserList!;
       femaleUserList = widget.femaleUserList!;
     } else if (widget.user!.gender == 'female') {
@@ -58,26 +67,29 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
       maleUserList = widget.maleUserList!;
       femaleUserList = widget.femaleUserList!;
     }
+    isLoading = false;
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     themeData = Theme.of(context);
-    return Scaffold(
-        floatingActionButton: InkWell(
-            onTap: () async {
-              userDetails = await LocationService.instance.getUserDetails();
-              if (userDetails.gender == 'male') {
-                maleUserList.add(userDetails);
-                setState(() {});
-              } else if (userDetails.gender == 'female') {
-                femaleUserList.add(userDetails);
-                setState(() {});
-              }
-            },
-            child: const Icon(Icons.update, color: Colors.black)),
-        body: SafeArea(child: newHomeScreenUI()));
+    return isLoading
+        ? CircularProgressIndicator()
+        : Scaffold(
+            floatingActionButton: InkWell(
+                onTap: () async {
+                  userDetails = await LocationService.instance.getUserDetails();
+                  if (userDetails.gender == 'male') {
+                    maleUserList.add(userDetails);
+                    setState(() {});
+                  } else if (userDetails.gender == 'female') {
+                    femaleUserList.add(userDetails);
+                    setState(() {});
+                  }
+                },
+                child: const Icon(Icons.update, color: Colors.black)),
+            body: SafeArea(child: newHomeScreenUI()));
   }
 
   Widget newHomeScreenUI() {

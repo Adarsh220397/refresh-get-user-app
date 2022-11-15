@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:refresh_get_user/src/screens/new_home_screen.dart';
 import 'package:refresh_get_user/src/services/auth/firebase_phone_auth.dart';
+import 'package:refresh_get_user/src/services/model/user_details.dart';
 import 'package:refresh_get_user/src/services/model/user_model.dart';
 import 'package:refresh_get_user/src/utils/app_constants.dart';
 import 'package:refresh_get_user/src/utils/button_widget.dart';
@@ -272,7 +273,19 @@ class _MobileNumberScreenState extends State<MobileNumberScreen>
 
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => NewHomeScreen()),
+        MaterialPageRoute(
+            builder: (context) => NewHomeScreen(
+                  femaleUserList: [],
+                  maleUserList: [],
+                  user: UserDetailsModel(
+                      city: '',
+                      firstName: '',
+                      gender: '',
+                      lastName: '',
+                      latitude: '',
+                      locationName: '',
+                      longitude: ''),
+                )),
         (Route<dynamic> route) => false);
   }
 
