@@ -6,6 +6,7 @@ import 'package:refresh_get_user/src/screens/new_home_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 

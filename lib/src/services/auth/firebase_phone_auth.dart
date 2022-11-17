@@ -16,6 +16,10 @@ class FirebasePhoneAuth {
     print('---------$phoneNumber');
     assert(phoneNumber != null);
     print('Phone auth started');
+    FirebaseAuth.instance.setSettings(
+      appVerificationDisabledForTesting: false,
+      forceRecaptchaFlow: true,
+    );
     FirebaseAuth.instance
         .verifyPhoneNumber(
             phoneNumber: phoneNumber.toString(),
