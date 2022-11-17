@@ -223,12 +223,6 @@ class _MobileNumberScreenState extends State<MobileNumberScreen>
   }
 
   @override
-  void onAuthenticationFail(FirebaseAuthException error) {
-    setLoadingState(false);
-    print("Mobile Number Page : onAuthenticationFail");
-  }
-
-  @override
   void onCodeAutoRetrievalTimeout(String veriId) {
     setLoadingState(false);
     verificationId = veriId;
@@ -255,6 +249,8 @@ class _MobileNumberScreenState extends State<MobileNumberScreen>
   @override
   void onVerificationFailed(FirebaseAuthException error) {
     setLoadingState(false);
+
+    CommonUtils.instance.showSnackBar(context, error.message!);
     print("OTP Page : onVerificationFailed");
   }
 
@@ -263,6 +259,19 @@ class _MobileNumberScreenState extends State<MobileNumberScreen>
     setLoadingState(false);
     print('auth success');
     await checkForUserRegistration(firebaseUser);
+  }
+
+  @override
+  void onAuthenticationFail(FirebaseAuthException error) {
+    setLoadingState(false);
+    print("Mobile Number Page : onAuthenticationFail ${error.code}");
+    // to do -- split error msg
+    if (error.code == 'network-request-failed') {
+      CommonUtils.instance.showSnackBar(
+          context, "No network connection. Please try again.", "N");
+    } else {
+      CommonUtils.instance.showSnackBar(context, error.message!);
+    }
   }
 
   Future<void> checkForUserRegistration(User? firebaseUser) async {
